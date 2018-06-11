@@ -6,24 +6,33 @@ import { AsyncStorage } from 'react-native'
 // addCardToDeck: take in two arguments, title and card, and will add the card to the list of questions for the deck with the associated title.
 
 export function getDecks () {
-  return AsyncStorage.getItem(key)
-    .then(results => JSON.parse(results))
+  return AsyncStorage.getAllKeys()
+    .then(ks => AsyncStorage.multiGet(ks))
+    .then(stores => stores)
+    .catch(err => console.log('err',err))
 }
 
 export function getDeck (key) {
   return AsyncStorage.getItem(key)
     .then(results => JSON.parse(results))
+    .catch(err => console.log('err',err))
+}
+
+export function saveDeckTitle (title) {
+  return AsyncStorage.setItem(key, JSON.stringify({
+    [title]: { title }
+  }))
 }
 
 export function addCardToDeck ({ title, card }) {
   return AsyncStorage.mergeItem(key, JSON.stringify({
-    [card]: title
+    [title]: { title, questions: card }
   }))
 }
 
-export function saveDeckTitle (title) {
-  return AsyncStorage.mergeItem(key, JSON.stringify({
-    [card]: title
+export function saveQuizHistory ({ date }) {
+  return AsyncStorage.setItem(key, JSON.stringify({
+    [date]: 'done'
   }))
 }
 
@@ -50,4 +59,9 @@ const decks = {
       }
     ]
   }
+}
+
+const quizHistory = {
+  051318: 'done',
+  051418: 'missed'
 }

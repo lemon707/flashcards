@@ -4,9 +4,12 @@ import { connect } from 'react-redux'
 import { white } from '../utils/helpers'
 
 class DeckList extends Component {
+  state = {}
+
   render() {
     return (
       <View style={styles.container}>
+        <Text>HELLO</Text>
       </View>
     )
   }
