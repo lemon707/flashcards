@@ -7,6 +7,7 @@ class NewDeck extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.text}>NEW DECK</Text>
       </View>
     )
   }
@@ -18,6 +19,9 @@ const styles = StyleSheet.create({
     backgroundColor: white,
     padding: 15,
   },
+  text: {
+    fontSize: 40
+  }
 })
 
 export default NewDeck

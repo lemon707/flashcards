@@ -7,6 +7,7 @@ class NewQuestion extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>NEW QUESTION</Text>
       </View>
     )
   }

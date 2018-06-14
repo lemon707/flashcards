@@ -8,9 +8,11 @@ import { Provider } from 'react-redux'
 import DeckList from './components/DeckList'
 import Deck from './components/Deck'
 import NewDeck from './components/NewDeck'
+import NewQuestion from './components/NewQuestion'
+import Quiz from './components/Quiz'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo'
-import { purple, white } from './utils/colors'
+import { pink, white } from './utils/colors'
 
 function FlashcardsStatusBar ({backgroundColor, ...props}) {
   return (
@@ -29,7 +31,7 @@ const Tabs = createBottomTabNavigator({
     },
   },
   NewDeck: {
-    screen: Deck,
+    screen: NewDeck,
     navigationOptions: {
       tabBarLabel: 'NEW DECK',
       tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
@@ -40,10 +42,10 @@ const Tabs = createBottomTabNavigator({
     header: null
   },
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? purple : white,
+    activeTintColor: Platform.OS === 'ios' ? pink : white,
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? white : purple,
+      backgroundColor: Platform.OS === 'ios' ? white : pink,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -59,14 +61,23 @@ const MainNavigator = createStackNavigator({
   Home: {
     screen: Tabs,
   },
-  EntryDetail: {
+  DeckList: {
     screen: DeckList,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
-        backgroundColor: purple,
+        backgroundColor: pink,
       }
     }
+  },
+  Deck: {
+    screen: Deck,
+  },
+  NewQuestion: {
+    screen: NewQuestion,
+  },
+  Quiz: {
+    screen: Quiz
   }
 })
 
@@ -78,11 +89,11 @@ export default class App extends React.Component {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
-          <FlashcardsStatusBar backgroundColor={purple} barStyle="light-content" />
-          <MainNavigator />
+          <FlashcardsStatusBar backgroundColor={pink} barStyle="light-content" />
+          <MainNavigator/>
         </View>
       </Provider>
-    );
+    )
   }
 }
 
@@ -93,4 +104,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})

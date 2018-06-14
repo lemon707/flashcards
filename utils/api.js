@@ -7,8 +7,14 @@ import { AsyncStorage } from 'react-native'
 
 export function getDecks () {
   return AsyncStorage.getAllKeys()
-    .then(ks => AsyncStorage.multiGet(ks))
-    .then(stores => stores)
+    .then(ks => {
+      console.log('ks',ks)
+      return AsyncStorage.multiGet(ks)
+    })
+    .then(stores => {
+      console.log('stores',stores)
+      return stores
+    })
     .catch(err => console.log('err',err))
 }
 
@@ -36,7 +42,7 @@ export function saveQuizHistory ({ date }) {
   }))
 }
 
-const decks = {
+export const Decks = {
   React: {
     title: 'React',
     questions: [
@@ -62,6 +68,6 @@ const decks = {
 }
 
 const quizHistory = {
-  051318: 'done',
-  051418: 'missed'
+  '051318': 'done',
+  '051418': 'missed'
 }
