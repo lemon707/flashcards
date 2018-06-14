@@ -9,7 +9,7 @@ class NewDeck extends Component {
     super(props);
     this.state = {
       title: ''
-    };
+    }
   }
   submit = () => {
     const { title } = this.state

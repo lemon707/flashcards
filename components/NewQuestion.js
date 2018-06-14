@@ -10,7 +10,7 @@ class NewQuestion extends Component {
     this.state = {
       question: '',
       answer: ''
-    };
+    }
   }
   submit = () => {
     const { title } = this.props.navigation.state.params
