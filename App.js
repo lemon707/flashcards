@@ -2,14 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { setLocalNotification } from './utils/helpers'
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
-import { createStore } from 'redux'
-import reducer from './reducers'
-import { Provider } from 'react-redux'
 import DeckList from './components/DeckList'
 import Deck from './components/Deck'
 import NewDeck from './components/NewDeck'
 import NewQuestion from './components/NewQuestion'
 import Quiz from './components/Quiz'
+import Score from './components/Score'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { pink, white } from './utils/colors'
@@ -78,6 +76,9 @@ const MainNavigator = createStackNavigator({
   },
   Quiz: {
     screen: Quiz
+  },
+  Score: {
+    screen: Score
   }
 })
 
@@ -87,12 +88,10 @@ export default class App extends React.Component {
   }
   render() {
     return (
-      <Provider store={createStore(reducer)}>
-        <View style={{flex: 1}}>
-          <FlashcardsStatusBar backgroundColor={pink} barStyle="light-content" />
-          <MainNavigator/>
-        </View>
-      </Provider>
+      <View style={{flex: 1}}>
+        <FlashcardsStatusBar backgroundColor={pink} barStyle="light-content" />
+        <MainNavigator/>
+      </View>
     )
   }
 }

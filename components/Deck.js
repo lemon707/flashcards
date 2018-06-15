@@ -13,7 +13,6 @@ class Deck extends Component {
   }
   render() {
     const decks = Decks
-    console.log('decks',decks)
     const { title } = this.props.navigation.state.params
     return (
       <View style={styles.container}>

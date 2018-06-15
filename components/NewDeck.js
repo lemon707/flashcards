@@ -6,7 +6,7 @@ import { saveDeckTitle } from '../utils/api'
 
 class NewDeck extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       title: ''
     }

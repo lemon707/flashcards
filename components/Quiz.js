@@ -6,48 +6,65 @@ import { Decks } from '../utils/api'
 
 class Quiz extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      showAnswer: true
+      showAnswer: true,
+      score: 0,
+      counter: 0,
+      numCards: 0
     }
   }
-  markCorrect() {
-
+  mark(isCorrect) {
+    const { title } = this.props.navigation.state.params
+    const { counter, score, numCards, showAnswer } = this.state
+    isCorrect ? this.setState({ score: score + 1 }) : null
+    this.setState({ counter: counter + 1, showAnswer: !showAnswer })
+    numCards === counter ? this.props.navigation.navigate('Score', { title, score, numCards }) : null
   }
-  markIncorrect() {
-
+  componentDidMount() {
+    const decks = Decks
+    const { title } = this.props.navigation.state.params
+    const numCards = decks[title].questions.length - 1
+    this.setState({ numCards })
+    console.log('this.state',this.state)
   }
   render() {
     const decks = Decks
     const { title } = this.props.navigation.state.params
-
+    const { counter, numCards } = this.state
     return (
       <View style={styles.container}>
-        {
-          !this.state.showAnswer ?
-          <View style={styles.header}>
-            <Text style={styles.answerText}>{decks[title].questions[0].answer}</Text>
-          </View>
-          :
-          <View style={styles.header}>
-            <Text style={styles.questionText}>{decks[title].questions[0].question}</Text>
-          </View>
-        }
-        <TouchableOpacity style={styles.answerButton} onPress={() => this.setState({showAnswer: !this.state.showAnswer})}>
-          <Text style={styles.showAnswerText}>{this.state.showAnswer ? 'Show Answer' : 'Show Question' }</Text>
-        </TouchableOpacity>
-        {
-          !this.state.showAnswer ?
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.correctButton} onPress={() => this.markCorrect()}>
-              <Text style={styles.buttonText}>Correct</Text>
+        { counter <= numCards && (
+          <View style={styles.container}>
+            <View>{counter} out of {numCards}</View>
+            {
+              !this.state.showAnswer ?
+              <View style={styles.header}>
+                <Text style={styles.answerText}>{decks[title].questions[counter].answer}</Text>
+              </View>
+              :
+              <View style={styles.header}>
+                <Text style={styles.questionText}>{decks[title].questions[counter].question}</Text>
+              </View>
+            }
+            <TouchableOpacity style={styles.answerButton} onPress={() => this.setState({showAnswer: !this.state.showAnswer})}>
+              <Text style={styles.showAnswerText}>{this.state.showAnswer ? 'Show Answer' : 'Show Question' }</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.incorrectButton} onPress={() => this.markIncorrect()}>
-              <Text style={styles.buttonText}>Incorrect</Text>
-            </TouchableOpacity>
+            {
+              !this.state.showAnswer ?
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.correctButton} onPress={() => this.mark(true)}>
+                  <Text style={styles.buttonText}>Correct</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.incorrectButton} onPress={() => this.mark(false)}>
+                  <Text style={styles.buttonText}>Incorrect</Text>
+                </TouchableOpacity>
+              </View>
+              :
+              null
+            }
           </View>
-          :
-          null
+        )
         }
      </View>
     )

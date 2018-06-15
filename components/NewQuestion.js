@@ -6,7 +6,7 @@ import { addCardToDeck } from '../utils/api'
 
 class NewQuestion extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       question: '',
       answer: ''
