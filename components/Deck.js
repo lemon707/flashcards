@@ -2,31 +2,56 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { white, pink } from '../utils/helpers'
-import { Decks } from '../utils/api'
+import { getDecks } from '../utils/api'
 
 class Deck extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      decks: null
+    }
+  }
   addCard = (title) => {
     this.props.navigation.navigate('NewQuestion', { title })
   }
   startQuiz = (title) => {
     this.props.navigation.navigate('Quiz', { title })
   }
+  componentDidMount() {
+    getDecks()
+      .then(decks => {
+        this.setState({ decks })
+      })
+  }
+  componentDidUpdate(prevProps, prevState) {
+    getDecks()
+      .then(decks => {
+        this.setState({ decks })
+      })
+  }
   render() {
-    const decks = Decks
+    const { decks } = this.state
+    console.log('decks here',decks)
     const { title } = this.props.navigation.state.params
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{decks[title].title}</Text>
-          <Text style={styles.subTitle}>{decks[title].questions.length} cards</Text>
-        </View>
-        <TouchableOpacity style={styles.deckContainer} onPress={() => this.addCard(title)}>
-          <Text style={styles.title}>Add Card</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deckContainer} onPress={() => this.startQuiz(title)}>
-          <Text style={styles.title}>Start Quiz</Text>
-        </TouchableOpacity>
-      </View>
+        { decks && Object.keys(decks).length ?
+          <View style={styles.innerContainer}>
+            <View style={styles.header}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.subTitle}>{decks[title].questions.length} cards</Text>
+            </View>
+            <TouchableOpacity style={styles.deckContainer} onPress={() => this.addCard(title)}>
+              <Text style={styles.title}>Add Card</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.deckContainer} onPress={() => this.startQuiz(title)}>
+              <Text style={styles.title}>Start Quiz</Text>
+            </TouchableOpacity>
+          </View>
+          :
+          null
+        }
+    </View>
     )
   }
 }
@@ -36,6 +61,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerContainer: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

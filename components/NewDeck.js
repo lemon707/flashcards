@@ -13,7 +13,6 @@ class NewDeck extends Component {
   }
   submit = () => {
     const { title } = this.state
-    console.log('this.state',this.state)
     saveDeckTitle(title)
     this.props.navigation.navigate('Deck', { title })
   }
@@ -23,7 +22,7 @@ class NewDeck extends Component {
         <Text>What is the title of your new deck?</Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(title) => this.setState({title})}
+          onChangeText={(title) => this.setState({ title })}
           value={this.state.title}
         />
         <TouchableHighlight onPress={this.submit}>

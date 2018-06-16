@@ -24,16 +24,16 @@ class NewQuestion extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>QUESTION</Text>
+        <Text>Question</Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(question) => this.setState({question})}
+          onChangeText={(question) => this.setState({ question })}
           value={this.state.question}
         />
-        <Text>ANSWER</Text>
+        <Text>Answer</Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(answer) => this.setState({answer})}
+          onChangeText={(answer) => this.setState({ answer })}
           value={this.state.answer}
         />
         <TouchableHighlight onPress={this.submit}>

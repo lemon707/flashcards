@@ -1,19 +1,21 @@
 import { AsyncStorage } from 'react-native'
 
-// getDecks: return all of the decks along with their titles, questions, and answers.
-// getDeck: take in a single id argument and return the deck associated with that id.
-// saveDeckTitle: take in a single title argument and add it to the decks.
-// addCardToDeck: take in two arguments, title and card, and will add the card to the list of questions for the deck with the associated title.
-
 export function getDecks () {
   return AsyncStorage.getAllKeys()
     .then(ks => {
-      console.log('ks',ks)
       return AsyncStorage.multiGet(ks)
-    })
-    .then(stores => {
-      console.log('stores',stores)
-      return stores
+        .then(store => {
+          // AsyncStorage.clear()
+          // AsyncStorage.multiRemove(ks)
+          let obj = {}
+          store.forEach((s,i) => {
+            let key = s[0]
+            let value = JSON.parse(s[1])
+            if(!obj[key]) obj[key] = {}
+            obj[key] = value
+          })
+          return obj
+        })
     })
     .catch(err => console.log('err',err))
 }
@@ -25,21 +27,24 @@ export function getDeck (key) {
 }
 
 export function saveDeckTitle (title) {
-  return AsyncStorage.setItem(key, JSON.stringify({
-    [title]: { title }
-  }))
+  return AsyncStorage.setItem(title, JSON.stringify({ title, questions: [] }))
 }
 
-export function addCardToDeck ({ title, card }) {
-  return AsyncStorage.mergeItem(key, JSON.stringify({
-    [title]: { title, questions: card }
-  }))
+export function addCardToDeck (title, card) {
+  return AsyncStorage.getItem(title)
+    .then(results => {
+      const r = JSON.parse(results)
+      if(r.questions.length) {
+        return AsyncStorage.mergeItem(title, JSON.stringify({ title, questions: [...r.questions, card] }))
+      } else {
+        return AsyncStorage.mergeItem(title, JSON.stringify({ title, questions: [card] }))
+      }
+    })
+
 }
 
-export function saveQuizHistory ({ date }) {
-  return AsyncStorage.setItem(key, JSON.stringify({
-    [date]: 'done'
-  }))
+export function saveQuizHistory (date) {
+  return AsyncStorage.setItem(date, JSON.stringify({ [date]: true }))
 }
 
 export const Decks = {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { white } from '../utils/helpers'
-import { Decks } from '../utils/api'
+import { getDecks } from '../utils/api'
 
 class Quiz extends Component {
   constructor(props) {
@@ -11,47 +11,70 @@ class Quiz extends Component {
       showAnswer: true,
       score: 0,
       counter: 0,
-      numCards: 0
+      numCards: 0,
+      decks: null
     }
   }
   mark(isCorrect) {
     const { title } = this.props.navigation.state.params
     const { counter, score, numCards, showAnswer } = this.state
-    isCorrect ? this.setState({ score: score + 1 }) : null
-    this.setState({ counter: counter + 1, showAnswer: !showAnswer })
-    numCards === counter ? this.props.navigation.navigate('Score', { title, score, numCards }) : null
+    console.log('before counter',counter,'numCards',numCards)
+    this.setState({
+      score: isCorrect ? (score + 1) : score,
+      counter: counter + 1,
+      showAnswer: !showAnswer
+    }, () => {
+      console.log('after counter',this.state.counter,'numCards',this.state.numCards,'score',this.state.score)
+      if(this.state.numCards === this.state.counter) {
+        this.props.navigation.navigate('Score', { title, score: this.state.score, numCards: this.state.numCards })
+        this.setState({
+          showAnswer: true,
+          score: 0,
+          counter: 0,
+          numCards: 0,
+        })
+      }
+    })
+
   }
   componentDidMount() {
-    const decks = Decks
     const { title } = this.props.navigation.state.params
-    const numCards = decks[title].questions.length - 1
-    this.setState({ numCards })
-    console.log('this.state',this.state)
+    console.log('title componentDidMount',title)
+    getDecks()
+      .then(decks => {
+        this.setState({ decks }, () => {
+          console.log('decks componentDidMount',decks)
+          const numCards = decks[title].questions.length
+          this.setState({ numCards })
+        })
+      })
   }
   render() {
-    const decks = Decks
     const { title } = this.props.navigation.state.params
-    const { counter, numCards } = this.state
+    const { decks, counter, numCards, showAnswer } = this.state
+    console.log('title render',title,'decks',decks,'counter',counter,'numCards',numCards)
+    const answer = decks && decks[title].questions.length && decks[title].questions[counter] ? decks[title].questions[counter].answer : ''
+    const question = decks && decks[title].questions.length && decks[title].questions[counter] ? decks[title].questions[counter].question : ''
     return (
       <View style={styles.container}>
-        { counter <= numCards && (
-          <View style={styles.container}>
+        { (decks && Object.keys(decks).length) ?
+          <View style={styles.innerContainer}>
             <View>{counter} out of {numCards}</View>
             {
-              !this.state.showAnswer ?
+              !showAnswer ?
               <View style={styles.header}>
-                <Text style={styles.answerText}>{decks[title].questions[counter].answer}</Text>
+                <Text style={styles.answerText}>{answer}</Text>
               </View>
               :
               <View style={styles.header}>
-                <Text style={styles.questionText}>{decks[title].questions[counter].question}</Text>
+                <Text style={styles.questionText}>{question}</Text>
               </View>
             }
-            <TouchableOpacity style={styles.answerButton} onPress={() => this.setState({showAnswer: !this.state.showAnswer})}>
-              <Text style={styles.showAnswerText}>{this.state.showAnswer ? 'Show Answer' : 'Show Question' }</Text>
+            <TouchableOpacity style={styles.answerButton} onPress={() => this.setState({showAnswer: !showAnswer})}>
+              <Text style={styles.showAnswerText}>{showAnswer ? 'Show Answer' : 'Show Question' }</Text>
             </TouchableOpacity>
             {
-              !this.state.showAnswer ?
+              !showAnswer ?
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.correctButton} onPress={() => this.mark(true)}>
                   <Text style={styles.buttonText}>Correct</Text>
@@ -64,7 +87,8 @@ class Quiz extends Component {
               null
             }
           </View>
-        )
+          :
+          <Text>No cards available!</Text>
         }
      </View>
     )
@@ -76,6 +100,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerContainer: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

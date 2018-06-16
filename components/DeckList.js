@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { white } from '../utils/helpers'
-import { getDecks, Decks } from '../utils/api'
+import { getDecks } from '../utils/api'
 
 function Deck({ title, questions, onPressDeck, bounceValue }) {
   return (
@@ -11,38 +11,52 @@ function Deck({ title, questions, onPressDeck, bounceValue }) {
         style={[styles.title, {transform: [{scale: bounceValue}]}]}>
         {title}
       </Animated.Text>
-      <Text style={styles.subTitle}>{questions.length} cards</Text>
+      <Text style={styles.subTitle}>{questions && questions.length} cards</Text>
     </TouchableOpacity>
   )
 }
 
 class DeckList extends Component {
-  state = {
-    bounceValue: new Animated.Value(1)
+  constructor(props) {
+    super(props)
+    this.state = {
+      bounceValue: new Animated.Value(1),
+      decks: null
+    }
   }
 
   _onPressDeck = (title) => {
     Animated.sequence([
-      Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.04}),
+      Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.06}),
       Animated.spring(this.state.bounceValue, { toValue: 1, friction: 4})
     ]).start()
-    setTimeout(()=> this.props.navigation.navigate('Deck', { title }),500)
+    setTimeout(()=> this.props.navigation.navigate('Deck', { title }), 300)
+  }
+
+  componentDidMount() {
+    getDecks()
+      .then(decks => {
+        this.setState({ decks })
+      })
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    getDecks()
+      .then(decks => {
+        this.setState({ decks })
+      })
   }
 
   render() {
-    // getDecks()
-    //   .then(res => {
-    //     decks = res
-    //   })
-    const decks = Decks
+    const { decks } = this.state
     return (
       <View style={styles.container}>
-        {
+        { (decks && Object.keys(decks).length) &&
           Object.entries(decks).map((deck) => (
             <Deck
               key={deck[0]}
-              title={deck[1].title}
-              questions={deck[1].questions}
+              title={deck[1] && deck[1].title}
+              questions={deck[1] && deck[1].questions}
               bounceValue={this.state.bounceValue}
               onPressDeck={() => this._onPressDeck(deck[1].title)}>
             </Deck>
