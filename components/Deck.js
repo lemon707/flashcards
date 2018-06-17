@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { white, pink } from '../utils/helpers'
+import { white, lightPurp, purple } from '../utils/colors'
 import { getDecks } from '../utils/api'
 
 class Deck extends Component {
   constructor(props) {
     super(props)
+    this.mounted = false
     this.state = {
       decks: null
     }
@@ -21,17 +22,31 @@ class Deck extends Component {
   }
 
   componentDidMount() {
-    getDecks()
+    this.mounted = true
+    if(this.mounted) {
+      getDecks()
       .then(decks => {
         this.setState({ decks })
       })
+    }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // getDecks()
-    //   .then(decks => {
-    //     this.setState({ decks })
-    //   })
+  componentWillUnmount() {
+    this.mounted = false
+  }
+
+  componentDidUpdate() {
+    this.mounted = true
+    if(this.mounted) {
+      let count = 0
+      if(count === 0) {
+        getDecks()
+          .then(decks => {
+            count++
+            this.setState({ decks })
+          })
+      }
+    }
   }
 
   render() {
@@ -91,9 +106,9 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fffff0',
+    backgroundColor: lightPurp,
     borderWidth: 1,
-    borderColor: '#d6d6ad',
+    borderColor: purple,
     borderRadius: 10,
     marginBottom: 10
   }

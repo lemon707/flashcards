@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { white } from '../utils/helpers'
+import { white, green } from '../utils/colors'
 
 class Score extends Component {
   render() {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   restartQuizButton: {
     height: 60,
     width: '60%',
-    backgroundColor: 'green',
+    backgroundColor: green,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   backToDeckButton: {
     height: 60,
     width: '60%',
-    backgroundColor: 'green',
+    backgroundColor: green,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10

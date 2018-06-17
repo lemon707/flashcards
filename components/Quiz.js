@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { white } from '../utils/helpers'
+import { white, red, green } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 import { getDecks } from '../utils/api'
 
 class Quiz extends Component {
@@ -26,6 +27,9 @@ class Quiz extends Component {
     }, () => {
       if(this.state.numCards === this.state.counter) {
         this.props.navigation.navigate('Score', { title, score: this.state.score, numCards: this.state.numCards })
+        clearLocalNotification()
+          .then(setLocalNotification)
+
         this.setState({
           showAnswer: true,
           score: 0,
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
   },
   showAnswerText: {
     fontSize: 20,
-    color: 'red'
+    color: red
   },
   answerButton: {
     height: 60,
@@ -146,12 +150,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    color: 'white'
+    color: white
   },
   correctButton: {
     height: 60,
     width: '60%',
-    backgroundColor: 'green',
+    backgroundColor: green,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -160,7 +164,7 @@ const styles = StyleSheet.create({
   incorrectButton: {
     height: 60,
     width: '60%',
-    backgroundColor: 'red',
+    backgroundColor: red,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10

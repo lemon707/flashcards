@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
-import { white } from '../utils/helpers'
+import { white, gray } from '../utils/colors'
 import { saveDeckTitle } from '../utils/api'
 
 class NewDeck extends Component {
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '80%',
-    borderColor: 'gray',
+    borderColor: gray,
     borderBottomWidth: 1,
     marginBottom: 30,
     textAlign: 'center'
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   submitButton: {
     height: 40,
     width: '60%',
-    backgroundColor: 'white',
+    backgroundColor: white,
     justifyContent: 'center',
     alignItems: 'center',
   }
