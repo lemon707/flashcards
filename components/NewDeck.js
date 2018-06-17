@@ -11,11 +11,13 @@ class NewDeck extends Component {
       title: ''
     }
   }
+
   submit = () => {
     const { title } = this.state
     saveDeckTitle(title)
     this.props.navigation.navigate('Deck', { title })
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -24,8 +26,11 @@ class NewDeck extends Component {
           style={styles.textInput}
           onChangeText={(title) => this.setState({ title })}
           value={this.state.title}
+          autoFocus={true}
         />
-        <TouchableHighlight onPress={this.submit}>
+        <TouchableHighlight
+          style={styles.submitButton}
+          onPress={this.submit}>
           <Text>Submit</Text>
         </TouchableHighlight>
       </View>
@@ -38,14 +43,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     height: 40,
+    width: '80%',
     borderColor: 'gray',
-    borderWidth: 1
+    borderBottomWidth: 1,
+    marginBottom: 30,
+    textAlign: 'center'
   },
   text: {
     fontSize: 40
+  },
+  submitButton: {
+    height: 40,
+    width: '60%',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 

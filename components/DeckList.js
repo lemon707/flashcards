@@ -39,19 +39,19 @@ class DeckList extends Component {
         this.setState({ decks })
       })
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
-    getDecks()
-      .then(decks => {
-        this.setState({ decks })
-      })
+    // getDecks()
+    //   .then(decks => {
+    //     this.setState({ decks })
+    //   })
   }
 
   render() {
     const { decks } = this.state
     return (
       <View style={styles.container}>
-        { (decks && Object.keys(decks).length) &&
+        { (decks && Object.keys(decks).length) ?
           Object.entries(decks).map((deck) => (
             <Deck
               key={deck[0]}
@@ -61,6 +61,8 @@ class DeckList extends Component {
               onPressDeck={() => this._onPressDeck(deck[1].title)}>
             </Deck>
           ))
+          :
+          <Text>No decks available!</Text>
         }
       </View>
     )

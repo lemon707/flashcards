@@ -12,6 +12,7 @@ class NewQuestion extends Component {
       answer: ''
     }
   }
+
   submit = () => {
     const { title } = this.props.navigation.state.params
     const card = {
@@ -21,14 +22,21 @@ class NewQuestion extends Component {
     addCardToDeck(title, card)
     this.props.navigation.navigate('Deck', { title })
   }
+
   render() {
+    const { title } = this.props.navigation.state.params
+
     return (
       <View style={styles.container}>
+        <View style={styles.topHeader}>
+          <Text style={styles.topHeaderText}>Add a new card for {title} deck</Text>
+        </View>
         <Text>Question</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={(question) => this.setState({ question })}
           value={this.state.question}
+          autoFocus={true}
         />
         <Text>Answer</Text>
         <TextInput
@@ -36,7 +44,9 @@ class NewQuestion extends Component {
           onChangeText={(answer) => this.setState({ answer })}
           value={this.state.answer}
         />
-        <TouchableHighlight onPress={this.submit}>
+        <TouchableHighlight
+          style={styles.submitButton}
+          onPress={this.submit}>
           <Text>Submit</Text>
         </TouchableHighlight>
       </View>
@@ -49,11 +59,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topHeader: {
+    marginBottom: 30
+  },
+  topHeaderText: {
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   textInput: {
     height: 40,
+    width: '80%',
     borderColor: 'gray',
-    borderWidth: 1
+    borderBottomWidth: 1,
+    marginBottom: 30,
+    textAlign: 'center'
+  },
+  submitButton: {
+    height: 40,
+    width: '60%',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 

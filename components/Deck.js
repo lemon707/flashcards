@@ -11,28 +11,33 @@ class Deck extends Component {
       decks: null
     }
   }
+
   addCard = (title) => {
     this.props.navigation.navigate('NewQuestion', { title })
   }
+
   startQuiz = (title) => {
     this.props.navigation.navigate('Quiz', { title })
   }
+
   componentDidMount() {
     getDecks()
       .then(decks => {
         this.setState({ decks })
       })
   }
+
   componentDidUpdate(prevProps, prevState) {
-    getDecks()
-      .then(decks => {
-        this.setState({ decks })
-      })
+    // getDecks()
+    //   .then(decks => {
+    //     this.setState({ decks })
+    //   })
   }
+
   render() {
     const { decks } = this.state
-    console.log('decks here',decks)
     const { title } = this.props.navigation.state.params
+
     return (
       <View style={styles.container}>
         { decks && Object.keys(decks).length ?

@@ -15,51 +15,52 @@ class Quiz extends Component {
       decks: null
     }
   }
+
   mark(isCorrect) {
     const { title } = this.props.navigation.state.params
     const { counter, score, numCards, showAnswer } = this.state
-    console.log('before counter',counter,'numCards',numCards)
     this.setState({
       score: isCorrect ? (score + 1) : score,
       counter: counter + 1,
       showAnswer: !showAnswer
     }, () => {
-      console.log('after counter',this.state.counter,'numCards',this.state.numCards,'score',this.state.score)
       if(this.state.numCards === this.state.counter) {
         this.props.navigation.navigate('Score', { title, score: this.state.score, numCards: this.state.numCards })
         this.setState({
           showAnswer: true,
           score: 0,
           counter: 0,
-          numCards: 0,
         })
       }
     })
-
   }
+
   componentDidMount() {
     const { title } = this.props.navigation.state.params
-    console.log('title componentDidMount',title)
     getDecks()
       .then(decks => {
         this.setState({ decks }, () => {
-          console.log('decks componentDidMount',decks)
           const numCards = decks[title].questions.length
           this.setState({ numCards })
         })
       })
   }
+
   render() {
     const { title } = this.props.navigation.state.params
-    const { decks, counter, numCards, showAnswer } = this.state
-    console.log('title render',title,'decks',decks,'counter',counter,'numCards',numCards)
+    const { decks, counter, numCards, showAnswer, score } = this.state
     const answer = decks && decks[title].questions.length && decks[title].questions[counter] ? decks[title].questions[counter].answer : ''
     const question = decks && decks[title].questions.length && decks[title].questions[counter] ? decks[title].questions[counter].question : ''
+
     return (
       <View style={styles.container}>
-        { (decks && Object.keys(decks).length) ?
+        { numCards ?
           <View style={styles.innerContainer}>
-            <View>{counter} out of {numCards}</View>
+            <View style={styles.topHeader}>
+              <Text style={styles.topHeaderText}>{title}</Text>
+              <Text style={styles.topHeaderText}>{counter + 1} out of {numCards} cards</Text>
+              <Text style={styles.topHeaderText}>Current score: {score}</Text>
+            </View>
             {
               !showAnswer ?
               <View style={styles.header}>
@@ -102,6 +103,13 @@ const styles = StyleSheet.create({
     padding: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  topHeader: {
+    marginBottom: 30
+  },
+  topHeaderText: {
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   innerContainer: {
     width: '100%',

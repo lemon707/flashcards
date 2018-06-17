@@ -6,7 +6,7 @@ import { white } from '../utils/helpers'
 class Score extends Component {
   render() {
     const { title, score, numCards } = this.props.navigation.state.params
-    console.log('title score',title)
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
