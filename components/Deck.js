@@ -25,7 +25,9 @@ class Deck extends Component {
     if(this.mounted) {
       getDecks()
       .then(decks => {
-        this.setState({ decks })
+        if(this.mounted) {
+          this.setState({ decks })
+        }
       })
     }
   }
@@ -37,14 +39,12 @@ class Deck extends Component {
   componentDidUpdate() {
     this.mounted = true
     if(this.mounted) {
-      let count = 0
-      if(count === 0) {
-        getDecks()
-          .then(decks => {
-            count++
+      getDecks()
+        .then(decks => {
+          if(this.mounted) {
             this.setState({ decks })
-          })
-      }
+          }
+        })
     }
   }
 

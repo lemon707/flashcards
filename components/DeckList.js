@@ -19,6 +19,7 @@ class DeckList extends Component {
   constructor(props) {
     super(props)
     this.mounted = false
+    this.timeout = null
     this.state = {
       bounceValue: new Animated.Value(1),
       decks: null
@@ -38,7 +39,9 @@ class DeckList extends Component {
     if(this.mounted) {
       getDecks()
       .then(decks => {
-        this.setState({ decks })
+        if(this.mounted) {
+          this.setState({ decks })
+        }
       })
     }
   }
@@ -50,14 +53,12 @@ class DeckList extends Component {
   componentDidUpdate() {
     this.mounted = true
     if(this.mounted) {
-      let count = 0
-      if(count === 0) {
-        getDecks()
-        .then(decks => {
-          count++
+      getDecks()
+      .then(decks => {
+        if(this.mounted) {
           this.setState({ decks })
-        })
-      }
+        }
+      })
     }
   }
 
