@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import { white, red, green } from '../utils/colors'
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
 import { getDecks } from '../utils/api'

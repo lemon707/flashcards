@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native'
-import { connect } from 'react-redux'
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, KeyboardAvoidingView } from 'react-native'
 import { white, gray } from '../utils/colors'
 import { addCardToDeck } from '../utils/api'
 
@@ -23,6 +22,10 @@ class NewQuestion extends Component {
     if(!card.answer) { return alert("fill the answer" ) }
 
     addCardToDeck(title, card)
+    this.setState({
+      question: '',
+      answer: ''
+    })
     this.props.navigation.navigate('Deck', { title })
   }
 
@@ -30,7 +33,7 @@ class NewQuestion extends Component {
     const { title } = this.props.navigation.state.params
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={styles.topHeader}>
           <Text style={styles.topHeaderText}>Add a new card for {title} deck</Text>
         </View>
@@ -52,7 +55,7 @@ class NewQuestion extends Component {
           onPress={this.submit}>
           <Text>Submit</Text>
         </TouchableHighlight>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
-import { connect } from 'react-redux'
 import { white, lightPurp, purple } from '../utils/colors'
 import { getDecks } from '../utils/api'
 

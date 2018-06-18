@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import { white, green } from '../utils/colors'
 
 class Score extends Component {

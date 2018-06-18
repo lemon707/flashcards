@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import { white, lightPurp, purple } from '../utils/colors'
 import { getDecks } from '../utils/api'
 
@@ -59,7 +58,7 @@ class Deck extends Component {
           <View style={styles.innerContainer}>
             <View style={styles.header}>
               <Text style={styles.title}>{title}</Text>
-              <Text style={styles.subTitle}>{(decks[title] && decks[title].questions) ? decks[title].questions.length : 0} cards</Text>
+              <Text style={styles.subTitle}>{ (decks[title] && decks[title].questions) ? decks[title].questions.length : 0 } cards</Text>
             </View>
             <TouchableOpacity style={styles.deckContainer} onPress={() => this.addCard(title)}>
               <Text style={styles.title}>Add Card</Text>

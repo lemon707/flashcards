@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native'
-import { connect } from 'react-redux'
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, KeyboardAvoidingView } from 'react-native'
 import { white, gray } from '../utils/colors'
 import { saveDeckTitle } from '../utils/api'
 
@@ -17,11 +16,14 @@ class NewDeck extends Component {
     if(!title) { return alert("fill the title" ) }
     saveDeckTitle(title)
     this.props.navigation.navigate('Deck', { title })
+    this.setState({
+      title: ''
+    })
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Text>What is the title of your new deck?</Text>
         <TextInput
           style={styles.textInput}
@@ -34,7 +36,7 @@ class NewDeck extends Component {
           onPress={this.submit}>
           <Text>Submit</Text>
         </TouchableHighlight>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
