@@ -19,6 +19,9 @@ class NewQuestion extends Component {
       question: this.state.question,
       answer: this.state.answer
     }
+    if(!card.question) { return alert("fill the question" ) }
+    if(!card.answer) { return alert("fill the answer" ) }
+
     addCardToDeck(title, card)
     this.props.navigation.navigate('Deck', { title })
   }

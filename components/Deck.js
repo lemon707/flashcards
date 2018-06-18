@@ -59,7 +59,7 @@ class Deck extends Component {
           <View style={styles.innerContainer}>
             <View style={styles.header}>
               <Text style={styles.title}>{title}</Text>
-              <Text style={styles.subTitle}>{decks[title].questions.length} cards</Text>
+              <Text style={styles.subTitle}>{(decks[title] && decks[title].questions) ? decks[title].questions.length : 0} cards</Text>
             </View>
             <TouchableOpacity style={styles.deckContainer} onPress={() => this.addCard(title)}>
               <Text style={styles.title}>Add Card</Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import { setLocalNotification } from './utils/helpers'
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
@@ -82,7 +82,7 @@ const MainNavigator = createStackNavigator({
   }
 })
 
-export default class App extends React.Component {
+export default class App extends Component {
   componentDidMount() {
     setLocalNotification()
   }

@@ -14,6 +14,7 @@ class NewDeck extends Component {
 
   submit = () => {
     const { title } = this.state
+    if(!title) { return alert("fill the title" ) }
     saveDeckTitle(title)
     this.props.navigation.navigate('Deck', { title })
   }
