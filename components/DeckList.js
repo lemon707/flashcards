@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 import { white, lightPurp, purple } from '../utils/colors'
 import { getDecks } from '../utils/api'
 
@@ -18,7 +18,6 @@ function DeckCard({ title, questions, onPressDeck, bounceValue }) {
 class DeckList extends Component {
   constructor(props) {
     super(props)
-    this.mounted = false
     this.timeout = null
     this.state = {
       bounceValue: new Animated.Value(1),
@@ -35,37 +34,24 @@ class DeckList extends Component {
   }
 
   componentDidMount() {
-    this.mounted = true
-    if(this.mounted) {
-      getDecks()
-      .then(decks => {
-        if(this.mounted) {
-          this.setState({ decks })
-        }
-      })
-    }
-  }
-
-  componentWillUnmount() {
-    this.mounted = false
+    getDecks()
+    .then(decks => {
+      this.setState({ decks })
+    })
   }
 
   componentDidUpdate() {
-    this.mounted = true
-    if(this.mounted) {
-      getDecks()
-      .then(decks => {
-        if(this.mounted) {
-          this.setState({ decks })
-        }
-      })
-    }
+    getDecks()
+    .then(decks => {
+      this.setState({ decks })
+    })
   }
 
   render() {
     const { decks } = this.state
     return (
-      <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.container}>
         { (decks && Object.keys(decks).length) ?
           Object.entries(decks).map((deck) => (
             <DeckCard
@@ -79,7 +65,8 @@ class DeckList extends Component {
           :
           <Text>No decks available!</Text>
         }
-      </View>
+        </View>
+      </ScrollView>
     )
   }
 }

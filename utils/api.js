@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native'
 export function getDecks () {
   return AsyncStorage.getAllKeys()
     .then(ks => {
+      if(!ks.length) return null
       return AsyncStorage.multiGet(ks)
         .then(store => {
           // AsyncStorage.clear()
@@ -34,7 +35,7 @@ export function addCardToDeck (title, card) {
   return AsyncStorage.getItem(title)
     .then(results => {
       const r = JSON.parse(results)
-      if(r.questions.length) {
+      if(r.questions && r.questions.length) {
         return AsyncStorage.mergeItem(title, JSON.stringify({ title, questions: [...r.questions, card] }))
       } else {
         return AsyncStorage.mergeItem(title, JSON.stringify({ title, questions: [card] }))

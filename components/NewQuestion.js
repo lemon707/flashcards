@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableHighlight, KeyboardAvoidingView } from 'react-native'
-import { white, gray } from '../utils/colors'
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { white, green, gray } from '../utils/colors'
 import { addCardToDeck } from '../utils/api'
 
 class NewQuestion extends Component {
@@ -33,29 +33,31 @@ class NewQuestion extends Component {
     const { title } = this.props.navigation.state.params
 
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <View style={styles.topHeader}>
-          <Text style={styles.topHeaderText}>Add a new card for {title} deck</Text>
-        </View>
-        <Text>Question</Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(question) => this.setState({ question })}
-          value={this.state.question}
-          autoFocus={true}
-        />
-        <Text>Answer</Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(answer) => this.setState({ answer })}
-          value={this.state.answer}
-        />
-        <TouchableHighlight
-          style={styles.submitButton}
-          onPress={this.submit}>
-          <Text>Submit</Text>
-        </TouchableHighlight>
-      </KeyboardAvoidingView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <View style={styles.topHeader}>
+            <Text style={styles.topHeaderText}>Add a new card for {title} deck</Text>
+          </View>
+          <Text>Question</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(question) => this.setState({ question })}
+            value={this.state.question}
+            autoFocus={true}
+          />
+          <Text>Answer</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(answer) => this.setState({ answer })}
+            value={this.state.answer}
+          />
+          <TouchableHighlight
+            style={styles.submitButton}
+            onPress={this.submit}>
+            <Text>Submit</Text>
+          </TouchableHighlight>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   submitButton: {
     height: 40,
     width: '60%',
-    backgroundColor: white,
+    backgroundColor: green,
     justifyContent: 'center',
     alignItems: 'center',
   }
